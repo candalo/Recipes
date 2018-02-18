@@ -3,4 +3,8 @@
 
     <!-- Recipes Screen -->
     <string name="recipe_servings">%1$d servings</string>
+
+    <!-- Recipe details Screen -->
+    <string name="recipe_ingredients">Ingredients</string>
+    <string name="recipe_step_description">Step %1$d description</string>
 </resources>

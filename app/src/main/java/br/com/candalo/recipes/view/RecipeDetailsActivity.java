@@ -1,13 +1,14 @@
 package br.com.candalo.recipes.view;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import org.parceler.Parcels;
 
 import br.com.candalo.recipes.R;
 import br.com.candalo.recipes.domain.Recipe;
+import butterknife.ButterKnife;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
 
@@ -17,8 +18,14 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
+        injectDependencies();
         recipe = getRecipe();
         setupActionBar();
+        sendRecipeToFragment();
+    }
+
+    private void injectDependencies() {
+        ButterKnife.bind(this);
     }
 
     private Recipe getRecipe() {
@@ -30,6 +37,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(recipe.getName());
         }
+    }
+
+    private void sendRecipeToFragment() {
+        RecipeDetailsFragment fragment =
+                (RecipeDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        fragment.setRecipe(recipe);
     }
 
     @Override
