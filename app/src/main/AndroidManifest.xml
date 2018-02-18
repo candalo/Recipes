@@ -22,9 +22,12 @@
 
         <activity android:name=".view.RecipeDetailsActivity" />
 
+        <activity android:name=".view.RecipeIngredientsActivity" />
+
         <service
             android:name=".data.datasource.GetRecipesFromNetworkService"
             android:exported="false" />
+
     </application>
 
 </manifest>

@@ -24,9 +24,11 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private Context context;
     private Recipe recipe;
+    private RecipeDetailsItemListener listener;
 
-    public RecipeDetailsAdapter(Context context, Recipe recipe) {
+    public RecipeDetailsAdapter(Context context, RecipeDetailsItemListener listener, Recipe recipe) {
         this.context = context;
+        this.listener = listener;
         this.recipe = recipe;
     }
 
@@ -73,15 +75,21 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         return position == 0 ? RECIPE_INGREDIENTS_VIEW_TYPE : RECIPE_STEPS_VIEW_TYPE;
     }
 
-    class RecipeIngredientsViewHolder extends RecyclerView.ViewHolder {
+    class RecipeIngredientsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         List<RecipeIngredient> ingredients;
 
         RecipeIngredientsViewHolder(View view) {
             super(view);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.onClickIngredientsItem(ingredients);
         }
     }
 
-    class RecipeStepsViewHolder extends RecyclerView.ViewHolder {
+    class RecipeStepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         RecipeStep step;
         @BindView(R.id.tv_recipe_step)
         TextView recipeStepTextView;
@@ -89,6 +97,17 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.View
         RecipeStepsViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            listener.onClickStepItem(step);
+        }
+    }
+
+    public interface RecipeDetailsItemListener {
+        void onClickIngredientsItem(List<RecipeIngredient> ingredients);
+        void onClickStepItem(RecipeStep step);
     }
 }

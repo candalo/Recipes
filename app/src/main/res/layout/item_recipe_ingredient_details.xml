@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight">
+
+    <TextView
+        android:id="@+id/tv_quantity_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/recipe_ingredient_quantity"
+        style="@style/IngredientDetailStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_quantity_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_measure"
+        app:layout_constraintTop_toTopOf="@+id/tv_quantity_label"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/tv_measure_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/recipe_ingredient_measure"
+        style="@style/IngredientDetailStyle"
+        app:layout_constraintStart_toStartOf="@+id/tv_quantity_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_quantity_label" />
+
+    <TextView
+        android:id="@+id/tv_measure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_measure_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_ingredient_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_measure_label"
+        tools:text="CUP" />
+
+    <TextView
+        android:id="@+id/tv_ingredient_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/recipe_ingredient_name"
+        style="@style/IngredientDetailStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_measure_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_measure_label" />
+
+    <TextView
+        android:id="@+id/tv_ingredient_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_ingredient_name_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tv_ingredient_name_label"
+        app:layout_constraintTop_toTopOf="@+id/tv_ingredient_name_label"
+        tools:text="Graham Cracker crumbs" />
+</android.support.constraint.ConstraintLayout>

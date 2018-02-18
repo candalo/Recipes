@@ -7,4 +7,9 @@
     <!-- Recipe details Screen -->
     <string name="recipe_ingredients">Ingredients</string>
     <string name="recipe_step_description">Step %1$d description</string>
+
+    <!-- Recipe ingredient details Screen -->
+    <string name="recipe_ingredient_quantity">Quantity:</string>
+    <string name="recipe_ingredient_measure">Measure:</string>
+    <string name="recipe_ingredient_name">Ingredient:</string>
 </resources>

@@ -1,6 +1,7 @@
 package br.com.candalo.recipes.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,13 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.parceler.Parcels;
+
+import java.util.List;
+
 import br.com.candalo.recipes.R;
 import br.com.candalo.recipes.domain.Recipe;
+import br.com.candalo.recipes.domain.RecipeIngredient;
+import br.com.candalo.recipes.domain.RecipeStep;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class RecipeDetailsFragment extends Fragment {
+public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdapter.RecipeDetailsItemListener {
 
     private Unbinder unbinder;
     private Recipe recipe;
@@ -49,11 +56,23 @@ public class RecipeDetailsFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        RecipeDetailsAdapter adapter = new RecipeDetailsAdapter(getContext(), recipe);
+        RecipeDetailsAdapter adapter = new RecipeDetailsAdapter(getContext(), this, recipe);
         recipeDetailsRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
         recipeDetailsRecyclerView.setHasFixedSize(true);
         recipeDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recipeDetailsRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClickIngredientsItem(List<RecipeIngredient> ingredients) {
+        Intent intent = new Intent(getContext(), RecipeIngredientsActivity.class);
+        intent.putExtra(RecipeIngredient.class.getName(), Parcels.wrap(ingredients));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickStepItem(RecipeStep step) {
+
     }
 }
