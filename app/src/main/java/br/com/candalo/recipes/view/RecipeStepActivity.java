@@ -4,17 +4,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import org.parceler.Parcels;
 
 import br.com.candalo.recipes.R;
 import br.com.candalo.recipes.domain.RecipeStep;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RecipeStepActivity extends AppCompatActivity {
 
     private RecipeStep step;
+    @BindView(R.id.fl_video)
+    FrameLayout videoFrameLayout;
+    @BindView(R.id.iv_play)
+    ImageView playImageView;
+    @BindView(R.id.iv_error)
+    ImageView errorImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +32,7 @@ public class RecipeStepActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_step);
         injectDependencies();
         step = getStep();
+        setupVideoVisibility();
         setupActionBar();
         sendRecipeStepToRecipeStepInstructionsFragment();
     }
@@ -32,6 +43,14 @@ public class RecipeStepActivity extends AppCompatActivity {
 
     private RecipeStep getStep() {
         return Parcels.unwrap(getIntent().getParcelableExtra(RecipeStep.class.getName()));
+    }
+
+    private void setupVideoVisibility() {
+        if (step.getVideoURL().isEmpty()) {
+            playImageView.setVisibility(View.INVISIBLE);
+            errorImageView.setVisibility(View.VISIBLE);
+            videoFrameLayout.setClickable(false);
+        }
     }
 
     private void setupActionBar() {

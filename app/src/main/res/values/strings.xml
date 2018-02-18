@@ -14,6 +14,8 @@
     <string name="recipe_ingredient_name">Ingredient:</string>
 
     <!-- Recipe step Screen -->
+    <string name="play_icon_content_description">Play icon</string>
+    <string name="error_icon_content_description">Error icon</string>
     <string name="previous_step_content_description">Previous Step</string>
     <string name="next_step_content_description">Next Step</string>
 </resources>
