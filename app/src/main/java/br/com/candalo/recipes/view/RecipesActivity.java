@@ -3,6 +3,7 @@ package br.com.candalo.recipes.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,6 +19,7 @@ import br.com.candalo.recipes.R;
 import br.com.candalo.recipes.data.di.DaggerRecipesComponent;
 import br.com.candalo.recipes.data.di.RecipesModule;
 import br.com.candalo.recipes.domain.Recipe;
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -29,6 +31,8 @@ public class RecipesActivity extends AppCompatActivity implements RecipesView, R
     RecyclerView recipesRecyclerView;
     @BindView(R.id.pb_recipes)
     ProgressBar recipesProgressBar;
+    @BindBool(R.bool.is_tablet)
+    boolean isTablet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,11 @@ public class RecipesActivity extends AppCompatActivity implements RecipesView, R
     public void showRecipes(List<Recipe> recipes) {
         RecipesAdapter adapter = new RecipesAdapter(this, recipes);
         recipesRecyclerView.setHasFixedSize(true);
-        recipesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        if (isTablet) {
+            recipesRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        } else {
+            recipesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
         recipesRecyclerView.setAdapter(adapter);
     }
 
