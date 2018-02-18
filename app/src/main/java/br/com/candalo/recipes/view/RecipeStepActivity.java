@@ -1,5 +1,6 @@
 package br.com.candalo.recipes.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -8,6 +9,8 @@ import org.parceler.Parcels;
 
 import br.com.candalo.recipes.R;
 import br.com.candalo.recipes.domain.RecipeStep;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RecipeStepActivity extends AppCompatActivity {
 
@@ -17,9 +20,14 @@ public class RecipeStepActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_step);
+        injectDependencies();
         step = getStep();
         setupActionBar();
-        sendStepToFragment();
+        sendRecipeStepToRecipeStepInstructionsFragment();
+    }
+
+    private void injectDependencies() {
+        ButterKnife.bind(this);
     }
 
     private RecipeStep getStep() {
@@ -33,9 +41,9 @@ public class RecipeStepActivity extends AppCompatActivity {
         }
     }
 
-    private void sendStepToFragment() {
-        RecipeStepFragment fragment =
-                (RecipeStepFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_recipe_step);
+    private void sendRecipeStepToRecipeStepInstructionsFragment() {
+        RecipeStepInstructionsFragment fragment = (RecipeStepInstructionsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_recipe_step_instructions);
         fragment.setStep(step);
     }
 
@@ -48,5 +56,12 @@ public class RecipeStepActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @OnClick(R.id.fl_video)
+    void onClickVideo() {
+        Intent intent = new Intent(this, VideoActivity.class);
+        intent.putExtra(RecipeStep.class.getName(), Parcels.wrap(step));
+        startActivity(intent);
     }
 }

@@ -15,10 +15,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class RecipeStepFragment extends Fragment {
+public class RecipeStepInstructionsFragment extends Fragment {
 
     private Unbinder unbinder;
-    private RecipeStep step;
     @BindView(R.id.tv_step_short_description)
     TextView stepShortDescriptionTextView;
     @BindView(R.id.tv_step_description)
@@ -27,7 +26,7 @@ public class RecipeStepFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recipe_step, container, false);
+        View view = inflater.inflate(R.layout.fragment_recipe_step_instructions, container, false);
         injectDependencies(view);
 
         return view;
@@ -39,13 +38,11 @@ public class RecipeStepFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         unbinder.unbind();
+        super.onDestroyView();
     }
 
     public void setStep(RecipeStep step) {
-        this.step = step;
-
         stepShortDescriptionTextView.setText(step.getShortDescription());
         stepDescriptionTextView.setText(step.getDescription());
     }

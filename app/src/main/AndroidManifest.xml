@@ -22,6 +22,9 @@
         <activity android:name=".view.RecipeDetailsActivity" />
         <activity android:name=".view.RecipeIngredientsActivity" />
         <activity android:name=".view.RecipeStepActivity" />
+        <activity
+            android:name=".view.VideoActivity"
+            android:screenOrientation="landscape"/>
 
         <service
             android:name=".data.datasource.GetRecipesFromNetworkService"
