@@ -19,8 +19,7 @@ import butterknife.ButterKnife;
 public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDetailsFragment.OnRecipeStepSelectedListener {
 
     private Recipe recipe;
-    @BindView(R.id.player)
-    SimpleExoPlayerView playerView;
+    private SimpleExoPlayerView playerView;
     @BindBool(R.bool.is_tablet)
     boolean isTablet;
 
@@ -29,6 +28,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
         injectDependencies();
+        playerView = getPlayerView();
         recipe = getRecipe();
         setupActionBar();
         setupPlayerViewForTablets();
@@ -41,6 +41,13 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
 
     private Recipe getRecipe() {
         return Parcels.unwrap(getIntent().getParcelableExtra(Recipe.class.getName()));
+    }
+
+    private SimpleExoPlayerView getPlayerView() {
+        if (isTablet) {
+            return findViewById(R.id.player);
+        }
+        return null;
     }
 
     private void setupActionBar() {
