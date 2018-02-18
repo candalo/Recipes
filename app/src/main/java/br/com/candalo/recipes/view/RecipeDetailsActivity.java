@@ -3,16 +3,26 @@ package br.com.candalo.recipes.view;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import org.parceler.Parcels;
 
 import br.com.candalo.recipes.R;
 import br.com.candalo.recipes.domain.Recipe;
+import br.com.candalo.recipes.domain.RecipeStep;
+import butterknife.BindBool;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeDetailsActivity extends AppCompatActivity {
+public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDetailsFragment.OnRecipeStepSelectedListener {
 
     private Recipe recipe;
+    @BindView(R.id.player)
+    SimpleExoPlayerView playerView;
+    @BindBool(R.bool.is_tablet)
+    boolean isTablet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +31,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         injectDependencies();
         recipe = getRecipe();
         setupActionBar();
+        setupPlayerViewForTablets();
         sendRecipeToFragment();
     }
 
@@ -39,6 +50,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
     }
 
+    private void setupPlayerViewForTablets() {
+        if (isTablet) {
+            playerView.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void sendRecipeToFragment() {
         RecipeDetailsFragment fragment =
                 (RecipeDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
@@ -54,5 +71,20 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onRecipeStepSelected(RecipeStep step) {
+        if (playerView.getVisibility() == View.INVISIBLE) {
+            playerView.setVisibility(View.VISIBLE);
+        }
+
+        VideoFragment videoFragment = (VideoFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_video);
+        RecipeStepInstructionsFragment recipeStepInstructionsFragment = (RecipeStepInstructionsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_recipe_step_instructions);
+
+        videoFragment.setStep(step);
+        recipeStepInstructionsFragment.setStep(step);
     }
 }

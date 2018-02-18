@@ -1,6 +1,7 @@
 package br.com.candalo.recipes.view;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,16 +21,36 @@ import br.com.candalo.recipes.R;
 import br.com.candalo.recipes.domain.Recipe;
 import br.com.candalo.recipes.domain.RecipeIngredient;
 import br.com.candalo.recipes.domain.RecipeStep;
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdapter.RecipeDetailsItemListener {
 
+    private OnRecipeStepSelectedListener onRecipeStepSelectedListener;
     private Unbinder unbinder;
     private Recipe recipe;
     @BindView(R.id.rv_recipe_details)
     RecyclerView recipeDetailsRecyclerView;
+    @BindBool(R.bool.is_tablet)
+    boolean isTablet;
+
+    public interface OnRecipeStepSelectedListener {
+        void onRecipeStepSelected(RecipeStep step);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            onRecipeStepSelectedListener = (OnRecipeStepSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
 
     @Nullable
     @Override
@@ -73,8 +94,12 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
     @Override
     public void onClickStepItem(RecipeStep step) {
-        Intent intent = new Intent(getContext(), RecipeStepActivity.class);
-        intent.putExtra(RecipeStep.class.getName(), Parcels.wrap(step));
-        startActivity(intent);
+        if (isTablet) {
+            onRecipeStepSelectedListener.onRecipeStepSelected(step);
+        } else {
+            Intent intent = new Intent(getContext(), RecipeStepActivity.class);
+            intent.putExtra(RecipeStep.class.getName(), Parcels.wrap(step));
+            startActivity(intent);
+        }
     }
 }

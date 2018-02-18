@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -34,6 +35,8 @@ public class VideoFragment extends Fragment {
     private Unbinder unbinder;
     @BindView(R.id.player)
     SimpleExoPlayerView playerView;
+    @BindView(R.id.iv_error)
+    ImageView errorImageView;
 
     @Nullable
     @Override
@@ -56,9 +59,11 @@ public class VideoFragment extends Fragment {
     }
 
     private void releasePlayer() {
-        player.stop();
-        player.release();
-        player = null;
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
     }
 
     public void setStep(RecipeStep step) {
@@ -79,5 +84,11 @@ public class VideoFragment extends Fragment {
         player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
         player.prepare(videoSource);
         playerView.setPlayer(player);
+
+        if (videoURL.isEmpty()) {
+            errorImageView.setVisibility(View.VISIBLE);
+        } else {
+            errorImageView.setVisibility(View.INVISIBLE);
+        }
     }
 }
