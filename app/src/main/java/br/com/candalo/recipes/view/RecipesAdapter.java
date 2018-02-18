@@ -17,11 +17,13 @@ import butterknife.ButterKnife;
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesViewHolder> {
 
+    private RecipeItemListener listener;
     private Context context;
     private List<Recipe> recipes;
 
     public RecipesAdapter(Context context, List<Recipe> recipes) {
         this.context = context;
+        this.listener = (RecipeItemListener) context;
         this.recipes = recipes;
     }
 
@@ -37,6 +39,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
         Recipe recipe = recipes.get(position);
         holder.recipeName.setText(recipe.getName());
         holder.recipeServings.setText(context.getString(R.string.recipe_servings, recipe.getServings()));
+        holder.recipe = recipe;
     }
 
     @Override
@@ -44,7 +47,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
         return recipes != null ? recipes.size() : 0;
     }
 
-    class RecipesViewHolder extends RecyclerView.ViewHolder {
+    public interface RecipeItemListener {
+        void onRecipeSelected(Recipe recipe);
+    }
+
+    class RecipesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        Recipe recipe;
         @BindView(R.id.tv_recipe_name)
         TextView recipeName;
         @BindView(R.id.tv_recipe_servings)
@@ -53,6 +61,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
         RecipesViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.onRecipeSelected(recipe);
         }
     }
 }

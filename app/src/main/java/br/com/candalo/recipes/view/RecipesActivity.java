@@ -1,11 +1,14 @@
 package br.com.candalo.recipes.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -18,7 +21,7 @@ import br.com.candalo.recipes.domain.Recipe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipesActivity extends AppCompatActivity implements RecipesView {
+public class RecipesActivity extends AppCompatActivity implements RecipesView, RecipesAdapter.RecipeItemListener {
 
     @Inject
     RecipesPresenter presenter;
@@ -67,5 +70,12 @@ public class RecipesActivity extends AppCompatActivity implements RecipesView {
         recipesRecyclerView.setHasFixedSize(true);
         recipesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recipesRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onRecipeSelected(Recipe recipe) {
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
+        intent.putExtra(Recipe.class.getName(), Parcels.wrap(recipe));
+        startActivity(intent);
     }
 }
