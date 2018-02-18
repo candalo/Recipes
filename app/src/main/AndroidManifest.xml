@@ -19,15 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".view.RecipeDetailsActivity" />
-
         <activity android:name=".view.RecipeIngredientsActivity" />
+        <activity android:name=".view.RecipeStepActivity" />
 
         <service
             android:name=".data.datasource.GetRecipesFromNetworkService"
             android:exported="false" />
-
     </application>
 
 </manifest>

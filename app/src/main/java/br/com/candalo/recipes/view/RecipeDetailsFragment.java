@@ -73,6 +73,8 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
     @Override
     public void onClickStepItem(RecipeStep step) {
-
+        Intent intent = new Intent(getContext(), RecipeStepActivity.class);
+        intent.putExtra(RecipeStep.class.getName(), Parcels.wrap(step));
+        startActivity(intent);
     }
 }
