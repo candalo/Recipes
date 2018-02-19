@@ -2,9 +2,6 @@ package br.com.candalo.recipes.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
 import org.parceler.Parcels;
@@ -13,27 +10,18 @@ import java.util.List;
 
 import br.com.candalo.recipes.R;
 import br.com.candalo.recipes.domain.RecipeIngredient;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class RecipeIngredientsActivity extends AppCompatActivity {
 
     private List<RecipeIngredient> ingredients;
-    @BindView(R.id.rv_recipe_ingredients)
-    RecyclerView recipeIngredientsRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_ingredients);
-        injectDependencies();
         ingredients = getIngredients();
         setupActionBar();
-        setupRecyclerView();
-    }
-
-    private void injectDependencies() {
-        ButterKnife.bind(this);
+        sendIngredientsToFragment();
     }
 
     private List<RecipeIngredient> getIngredients() {
@@ -47,13 +35,10 @@ public class RecipeIngredientsActivity extends AppCompatActivity {
         }
     }
 
-    private void setupRecyclerView() {
-        RecipeIngredientsAdapter adapter = new RecipeIngredientsAdapter(ingredients);
-        recipeIngredientsRecyclerView.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL));
-        recipeIngredientsRecyclerView.setHasFixedSize(true);
-        recipeIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recipeIngredientsRecyclerView.setAdapter(adapter);
+    private void sendIngredientsToFragment() {
+        RecipeIngredientsFragment fragment =
+                (RecipeIngredientsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_recipe_ingredients);
+        fragment.setIngredients(ingredients);
     }
 
     @Override

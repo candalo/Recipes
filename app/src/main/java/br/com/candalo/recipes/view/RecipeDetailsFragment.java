@@ -28,7 +28,7 @@ import butterknife.Unbinder;
 
 public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdapter.RecipeDetailsItemListener {
 
-    private OnRecipeStepSelectedListener onRecipeStepSelectedListener;
+    private OnRecipeItemSelectedListener onRecipeItemSelectedListener;
     private Unbinder unbinder;
     private Recipe recipe;
     @BindView(R.id.rv_recipe_details)
@@ -36,8 +36,9 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
     @BindBool(R.bool.is_tablet)
     boolean isTablet;
 
-    public interface OnRecipeStepSelectedListener {
+    public interface OnRecipeItemSelectedListener {
         void onRecipeStepSelected(RecipeStep step);
+        void onRecipeIngredientsSelected(List<RecipeIngredient> ingredients);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         super.onAttach(context);
 
         try {
-            onRecipeStepSelectedListener = (OnRecipeStepSelectedListener) context;
+            onRecipeItemSelectedListener = (OnRecipeItemSelectedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement OnHeadlineSelectedListener");
@@ -87,15 +88,19 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
     @Override
     public void onClickIngredientsItem(List<RecipeIngredient> ingredients) {
-        Intent intent = new Intent(getContext(), RecipeIngredientsActivity.class);
-        intent.putExtra(RecipeIngredient.class.getName(), Parcels.wrap(ingredients));
-        startActivity(intent);
+        if (isTablet) {
+            onRecipeItemSelectedListener.onRecipeIngredientsSelected(ingredients);
+        } else {
+            Intent intent = new Intent(getContext(), RecipeIngredientsActivity.class);
+            intent.putExtra(RecipeIngredient.class.getName(), Parcels.wrap(ingredients));
+            startActivity(intent);
+        }
     }
 
     @Override
     public void onClickStepItem(RecipeStep step) {
         if (isTablet) {
-            onRecipeStepSelectedListener.onRecipeStepSelected(step);
+            onRecipeItemSelectedListener.onRecipeStepSelected(step);
         } else {
             Intent intent = new Intent(getContext(), RecipeStepActivity.class);
             intent.putExtra(RecipeStep.class.getName(), Parcels.wrap(step));

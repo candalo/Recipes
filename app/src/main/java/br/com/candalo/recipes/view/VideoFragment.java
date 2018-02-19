@@ -22,8 +22,11 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import org.parceler.Parcels;
+
 import br.com.candalo.recipes.R;
 import br.com.candalo.recipes.domain.RecipeStep;
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -37,18 +40,37 @@ public class VideoFragment extends Fragment {
     SimpleExoPlayerView playerView;
     @BindView(R.id.iv_error)
     ImageView errorImageView;
+    @BindBool(R.bool.is_tablet)
+    boolean isTablet;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video, container, false);
         injectDependencies(view);
+        videoURL = getVideoURL();
+        setupPlayerForTablets();
 
         return view;
     }
 
     private void injectDependencies(View view) {
         unbinder = ButterKnife.bind(this, view);
+    }
+
+    private String getVideoURL() {
+        if (getArguments() != null) {
+            RecipeStep step = Parcels.unwrap(getArguments().getParcelable(RecipeStep.class.getName()));
+            return step.getVideoURL();
+        }
+
+        return "";
+    }
+
+    private void setupPlayerForTablets() {
+        if (isTablet) {
+            setupPlayer();
+        }
     }
 
     @Override
@@ -67,7 +89,7 @@ public class VideoFragment extends Fragment {
     }
 
     public void setStep(RecipeStep step) {
-        videoURL = step.getVideoURL();
+        this.videoURL = step.getVideoURL();
         setupPlayer();
     }
 
