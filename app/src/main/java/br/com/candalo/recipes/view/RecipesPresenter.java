@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.candalo.recipes.base.data.DataSource;
+import br.com.candalo.recipes.base.data.Database;
 import br.com.candalo.recipes.base.view.Presenter;
 import br.com.candalo.recipes.data.datasource.RecipesDataSource;
 import br.com.candalo.recipes.domain.Recipe;
@@ -14,10 +15,13 @@ public class RecipesPresenter implements Presenter<RecipesView>, RecipesDataSour
 
     private RecipesView view;
     private DataSource<RecipesDataSource.ResultListener> recipesDataSource;
+    private Database<List<Recipe>> database;
 
     @Inject
-    public RecipesPresenter(DataSource<RecipesDataSource.ResultListener> recipesDataSource) {
+    public RecipesPresenter(DataSource<RecipesDataSource.ResultListener> recipesDataSource,
+                            Database<List<Recipe>> database) {
         this.recipesDataSource = recipesDataSource;
+        this.database = database;
     }
 
     @Override
@@ -32,6 +36,13 @@ public class RecipesPresenter implements Presenter<RecipesView>, RecipesDataSour
 
     void getRecipes() {
         view.showLoading();
+
+        List<Recipe> recipesSaved = database.get();
+        if (!recipesSaved.isEmpty()) {
+            onResult(recipesSaved);
+            return;
+        }
+
         recipesDataSource.execute(this);
     }
 

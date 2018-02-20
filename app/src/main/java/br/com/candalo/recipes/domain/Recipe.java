@@ -1,18 +1,34 @@
 package br.com.candalo.recipes.domain;
 
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
 import java.util.List;
 
-@Parcel(Parcel.Serialization.BEAN)
-public class Recipe {
+import br.com.candalo.recipes.base.data.AppDatabase;
 
-    private int id;
-    private String name;
-    private int servings;
-    private List<RecipeIngredient> ingredients;
-    private List<RecipeStep> steps;
+@Table(database = AppDatabase.class)
+@Parcel(Parcel.Serialization.BEAN)
+public class Recipe extends BaseModel {
+
+    @PrimaryKey
+    int id;
+    @Column
+    String name;
+    @Column
+    int servings;
+    List<RecipeIngredient> ingredients;
+    List<RecipeStep> steps;
+
+    public Recipe() {
+    }
 
     @ParcelConstructor
     public Recipe(int id, String name, int servings, List<RecipeIngredient> ingredients, List<RecipeStep> steps) {
@@ -35,11 +51,53 @@ public class Recipe {
         return servings;
     }
 
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "ingredients")
     public List<RecipeIngredient> getIngredients() {
+        if (ingredients == null || ingredients.isEmpty()) {
+            ingredients = SQLite.select()
+                    .from(RecipeIngredient.class)
+                    .where(RecipeIngredient_Table.recipe_id.eq(id))
+                    .queryList();
+        }
+
         return ingredients;
     }
 
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "steps")
     public List<RecipeStep> getSteps() {
+        if (steps == null || steps.isEmpty()) {
+            steps = SQLite.select()
+                    .from(RecipeStep.class)
+                    .where(RecipeStep_Table.recipe_id.eq(id))
+                    .queryList();
+        }
+
         return steps;
+    }
+
+    @Override
+    public boolean save() {
+        saveIngredients();
+        saveSteps();
+
+        return super.save();
+    }
+
+    private void saveIngredients() {
+        if (ingredients != null) {
+            for (RecipeIngredient ingredient : ingredients) {
+                ingredient.setRecipe(this);
+                ingredient.save();
+            }
+        }
+    }
+
+    private void saveSteps() {
+        if (steps != null) {
+            for (RecipeStep step : steps) {
+                step.setRecipe(this);
+                step.save();
+            }
+        }
     }
 }

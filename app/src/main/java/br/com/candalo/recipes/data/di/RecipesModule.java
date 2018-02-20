@@ -2,8 +2,13 @@ package br.com.candalo.recipes.data.di;
 
 import android.content.Context;
 
+import java.util.List;
+
 import br.com.candalo.recipes.base.data.DataSource;
+import br.com.candalo.recipes.base.data.Database;
+import br.com.candalo.recipes.data.datasource.RecipeDatabase;
 import br.com.candalo.recipes.data.datasource.RecipesDataSource;
+import br.com.candalo.recipes.domain.Recipe;
 import br.com.candalo.recipes.view.RecipesPresenter;
 import dagger.Module;
 import dagger.Provides;
@@ -18,12 +23,18 @@ public class RecipesModule {
     }
 
     @Provides
+    Database<List<Recipe>> provideDatabase() {
+        return new RecipeDatabase();
+    }
+
+    @Provides
     DataSource<RecipesDataSource.ResultListener> provideRecipeDataSource() {
         return new RecipesDataSource(context);
     }
 
     @Provides
-    RecipesPresenter provideRecipesPresenter(DataSource<RecipesDataSource.ResultListener> recipesDataSource) {
-        return new RecipesPresenter(recipesDataSource);
+    RecipesPresenter provideRecipesPresenter(DataSource<RecipesDataSource.ResultListener> recipesDataSource,
+                                             Database<List<Recipe>> database) {
+        return new RecipesPresenter(recipesDataSource, database);
     }
 }

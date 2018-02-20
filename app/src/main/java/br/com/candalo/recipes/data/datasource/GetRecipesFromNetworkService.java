@@ -23,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import br.com.candalo.recipes.base.data.Database;
 import br.com.candalo.recipes.domain.Recipe;
 
 import static br.com.candalo.recipes.data.datasource.RecipesDataSource.RECIPES_BROADCAST_RECEIVER;
@@ -31,6 +32,8 @@ public class GetRecipesFromNetworkService extends IntentService {
 
     private static final String BASE_URL =
             "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+
+    private Database<List<Recipe>> database;
 
     public GetRecipesFromNetworkService() {
         super(GetRecipesFromNetworkService.class.getName());
@@ -43,7 +46,7 @@ public class GetRecipesFromNetworkService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        database = new RecipeDatabase();
     }
 
     @Override
@@ -53,7 +56,9 @@ public class GetRecipesFromNetworkService extends IntentService {
         try {
             HttpURLConnection urlConnection = getConnection();
             InputStream inputStream = getRequestInputStream(urlConnection);
-            localBroadcastIntent.putExtra(Recipe.class.getName(), Parcels.wrap(getJsonData(inputStream)));
+            List<Recipe> recipes = getJsonData(inputStream);
+            saveRecipes(recipes);
+            localBroadcastIntent.putExtra(Recipe.class.getName(), Parcels.wrap(recipes));
             urlConnection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,5 +92,9 @@ public class GetRecipesFromNetworkService extends IntentService {
         Gson gson = new Gson();
 
         return gson.fromJson(result.toString(), listType);
+    }
+
+    private void saveRecipes(List<Recipe> recipes) {
+        database.save(recipes);
     }
 }

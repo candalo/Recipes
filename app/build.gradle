@@ -30,6 +30,7 @@ ext {
     gsonVersion = '2.8.2'
     parcelerVersion = '1.1.9'
     exoplayerVersion = '2.6.1'
+    dbflowVersion = '4.2.4'
 }
 
 dependencies {
@@ -59,4 +60,9 @@ dependencies {
 
     // media player
     implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
+
+    // storage
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflowVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${dbflowVersion}"
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflowVersion}"
 }
