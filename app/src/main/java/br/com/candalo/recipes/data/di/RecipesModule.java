@@ -2,8 +2,6 @@ package br.com.candalo.recipes.data.di;
 
 import android.content.Context;
 
-import java.util.List;
-
 import br.com.candalo.recipes.base.data.DataSource;
 import br.com.candalo.recipes.base.data.Database;
 import br.com.candalo.recipes.data.datasource.RecipeDatabase;
@@ -23,7 +21,7 @@ public class RecipesModule {
     }
 
     @Provides
-    Database<List<Recipe>> provideDatabase() {
+    Database<Recipe> provideDatabase() {
         return new RecipeDatabase();
     }
 
@@ -34,7 +32,7 @@ public class RecipesModule {
 
     @Provides
     RecipesPresenter provideRecipesPresenter(DataSource<RecipesDataSource.ResultListener> recipesDataSource,
-                                             Database<List<Recipe>> database) {
+                                             Database<Recipe> database) {
         return new RecipesPresenter(recipesDataSource, database);
     }
 }

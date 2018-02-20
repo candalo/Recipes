@@ -27,7 +27,7 @@ public class RecipeIngredient extends BaseModel {
     @SerializedName("ingredient")
     String name;
     @Transient
-    @ForeignKey()
+    @ForeignKey(stubbedRelationship = true)
     Recipe recipe;
 
     public RecipeIngredient() {

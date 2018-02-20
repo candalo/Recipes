@@ -33,7 +33,7 @@ public class GetRecipesFromNetworkService extends IntentService {
     private static final String BASE_URL =
             "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
-    private Database<List<Recipe>> database;
+    private Database<Recipe> database;
 
     public GetRecipesFromNetworkService() {
         super(GetRecipesFromNetworkService.class.getName());
@@ -95,6 +95,6 @@ public class GetRecipesFromNetworkService extends IntentService {
     }
 
     private void saveRecipes(List<Recipe> recipes) {
-        database.save(recipes);
+        database.saveAll(recipes);
     }
 }

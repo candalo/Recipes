@@ -1,9 +1,14 @@
 package br.com.candalo.recipes.base.data;
 
 
+import java.util.List;
+
 public interface Database<T> {
 
-    void save(T model);
+    void saveAll(List<T> model);
 
-    T get();
+    List<T> getList();
+
+    T get(int id);
+
 }

@@ -15,11 +15,11 @@ public class RecipesPresenter implements Presenter<RecipesView>, RecipesDataSour
 
     private RecipesView view;
     private DataSource<RecipesDataSource.ResultListener> recipesDataSource;
-    private Database<List<Recipe>> database;
+    private Database<Recipe> database;
 
     @Inject
     public RecipesPresenter(DataSource<RecipesDataSource.ResultListener> recipesDataSource,
-                            Database<List<Recipe>> database) {
+                            Database<Recipe> database) {
         this.recipesDataSource = recipesDataSource;
         this.database = database;
     }
@@ -37,7 +37,7 @@ public class RecipesPresenter implements Presenter<RecipesView>, RecipesDataSour
     void getRecipes() {
         view.showLoading();
 
-        List<Recipe> recipesSaved = database.get();
+        List<Recipe> recipesSaved = database.getList();
         if (!recipesSaved.isEmpty()) {
             onResult(recipesSaved);
             return;

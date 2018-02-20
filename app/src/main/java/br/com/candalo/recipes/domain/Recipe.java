@@ -4,6 +4,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.list.FlowCursorList;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -54,10 +55,13 @@ public class Recipe extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "ingredients")
     public List<RecipeIngredient> getIngredients() {
         if (ingredients == null || ingredients.isEmpty()) {
-            ingredients = SQLite.select()
+            FlowCursorList<RecipeIngredient> cursorList = SQLite.select()
                     .from(RecipeIngredient.class)
                     .where(RecipeIngredient_Table.recipe_id.eq(id))
-                    .queryList();
+                    .cursorList();
+
+            ingredients = cursorList.getAll();
+            cursorList.close();
         }
 
         return ingredients;
@@ -66,10 +70,13 @@ public class Recipe extends BaseModel {
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "steps")
     public List<RecipeStep> getSteps() {
         if (steps == null || steps.isEmpty()) {
-            steps = SQLite.select()
+            FlowCursorList<RecipeStep> cursorList = SQLite.select()
                     .from(RecipeStep.class)
                     .where(RecipeStep_Table.recipe_id.eq(id))
-                    .queryList();
+                    .cursorList();
+
+            steps = cursorList.getAll();
+            cursorList.close();
         }
 
         return steps;

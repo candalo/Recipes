@@ -26,7 +26,7 @@ public class RecipeStep extends BaseModel {
     @Column
     String thumbnailURL;
     @Transient
-    @ForeignKey()
+    @ForeignKey(stubbedRelationship = true)
     Recipe recipe;
 
     public RecipeStep() {
