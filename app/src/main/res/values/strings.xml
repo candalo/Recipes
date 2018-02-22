@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Recipes</string>
+
+    <!-- Recipes Screen -->
+    <string name="recipe_servings">%1$d servings</string>
+
+    <!-- Recipe details Screen -->
+    <string name="recipe_ingredients">Ingredients</string>
+    <string name="recipe_step_description">Step %1$d description</string>
+
+    <!-- Recipe ingredient details Screen -->
+    <string name="recipe_ingredient_quantity">Quantity:</string>
+    <string name="recipe_ingredient_measure">Measure:</string>
+    <string name="recipe_ingredient_name">Ingredient:</string>
+
+    <!-- Recipe step Screen -->
+    <string name="play_icon_content_description">Play icon</string>
+    <string name="error_icon_content_description">Error icon</string>
+    <string name="previous_step_content_description">Previous Step</string>
+    <string name="next_step_content_description">Next Step</string>
+
+    <!-- Widget -->
+    <string name="widget_recipes">Recipes</string>
+    <string name="widget_recipes_empty">Without recipes</string>
 </resources>
