@@ -46,6 +46,11 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "com.android.support.test:runner:$runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
 
     // dependency injection
     implementation "com.google.dagger:dagger:$daggerVersion"
